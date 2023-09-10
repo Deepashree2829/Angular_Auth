@@ -7,24 +7,26 @@
                         <h3 class="pt-3 font-weight-bold">Login</h3>
                     </div>
                     <div class="panel-body p-3">
-                        <form>
+                        <form [formGroup]="loginForm">
                             <div class="form-group pt-3">
-                                <div class="input-field">
+                                <div class="input-field" [class.error]="loginForm.controls['userName'].dirty && loginForm.hasError('required', 'userName')">
                                     <span class="fa fa-user p-2"></span>
-                                    <input type="text" placeholder="Username">
+                                    <input type="text" formControlName="userName" placeholder="Username">
                                 </div>
                             </div>
+                            <small class="text-danger" *ngIf="loginForm.controls['userName'].dirty && loginForm.hasError('required', 'userName')">*Username is required</small>
                             <div class="form-group pt-3">
-                                <div class="input-field">
+                                <div class="input-field" [class.error]="loginForm.controls['password'].dirty && loginForm.hasError('required', 'password')">
                                     <span class="fa fa-lock p-2"></span>
-                                    <input [type]="type" placeholder="Password">
+                                    <input [type]="type" formControlName="password" placeholder="Password">
                                     <span class="fa {{eyeIcon}}" (click)="hideSHow()"></span>
                                 </div>
                             </div>
+                            <small class="text-danger" *ngIf="loginForm.controls['password'].dirty && loginForm.hasError('required', 'password')">*Password is required</small>
                             <div class="form-inline fr mt-4">
                                 <a id="forget" class="font-weight-bold">Forget Password?</a>
                             </div>
-                            <button type="submit" class="btn btn-primary btn-block mt-4 w-100">Login</button>
+                            <button type="submit" class="btn btn-primary btn-block mt-4 w-100" (click)="onLogin()">Login</button>
                             <div class="text-center pt-4 text-muted">Don't have account? <a id="forget" routerLink="/signup">Sign Up</a></div>
                         </form>
                     </div>
