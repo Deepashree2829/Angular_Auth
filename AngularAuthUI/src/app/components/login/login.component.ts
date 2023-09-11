@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NgToastService } from 'ng-angular-popup';
 import ValidateForm from 'src/app/helpers/validate-form';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -18,12 +19,14 @@ export class LoginComponent {
     userName: ['', Validators.required],
     password: ['', Validators.required]
   })
-  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) {
+  constructor(
+    private formBuilder: FormBuilder, 
+    private authService: AuthService,
+    private router: Router, 
+    private toast: NgToastService) {
 
   }
-  ngOninit() {
-   
-  }
+  ngOninit() {}
   hideSHow() {
     this.isText = !this.isText;
     this.isText ? this.eyeIcon = "fa-eye" : this.eyeIcon = "fa-eye-slash";
@@ -31,19 +34,17 @@ export class LoginComponent {
   }
   onLogin() {
     if(this.loginForm.valid) {
-      console.log(this.loginForm.value);
       this.authService.login(this.loginForm.value).subscribe({
         next: (response: any) => {
-          alert(response.message);
           this.loginForm.reset();
+          this.toast.success({detail:"SUCCESS",summary: response.message,duration: 5000});
           this.router.navigate(['dashboard']);
         },
         error: (err) => {
-          alert(err?.error.message)
+          this.toast.error({detail:"ERROR",summary: "Something went wrong",sticky:true});
         }
       })
     } else {
-      console.log("Form is not valid");
       ValidateForm.validateAllFormFields(this.loginForm);
       alert("your form is invalid")
     }

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NgToastService } from 'ng-angular-popup';
 import ValidateForm from 'src/app/helpers/validate-form';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -20,12 +21,12 @@ export class SignupComponent {
     userName: ['', Validators.required],
     password: ['', Validators.required]
   })
-  constructor(private formBuilder: FormBuilder,private authService: AuthService, private router: Router) {
-
-  }
-  ngOninit() {
-
-  }
+  constructor(
+    private formBuilder: FormBuilder,
+    private authService: AuthService,
+    private router: Router, 
+    private toast: NgToastService) {}
+  ngOninit() {}
   hideSHow() {
     this.isText = !this.isText;
     this.isText ? this.eyeIcon = "fa-eye" : this.eyeIcon = "fa-eye-slash";
@@ -36,12 +37,12 @@ export class SignupComponent {
       console.log(this.signupForm.value);
       this.authService.signUp(this.signupForm.value).subscribe({
         next: (response: any) => {
-          alert(response.message)
           this.signupForm.reset();
+          this.toast.success({detail:"SUCCESS",summary: response.message,duration: 5000});
           this.router.navigate(['login']);
         },
         error: (err) => {
-          alert(err?.error.message)
+          this.toast.error({detail:"ERROR",summary: "Something went wrong",sticky:true});
         }
       })
     } else {
