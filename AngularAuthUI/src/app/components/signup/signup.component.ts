@@ -42,7 +42,7 @@ export class SignupComponent {
           this.router.navigate(['login']);
         },
         error: (err) => {
-          this.toast.error({detail:"ERROR",summary: "Something went wrong",sticky:true});
+          this.toast.error({detail:"ERROR",summary: "Something went wrong",duration: 5000});
         }
       })
     } else {

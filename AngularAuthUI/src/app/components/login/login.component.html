@@ -23,8 +23,8 @@
                                 </div>
                             </div>
                             <small class="text-danger" *ngIf="loginForm.controls['password'].dirty && loginForm.hasError('required', 'password')">*Password is required</small>
-                            <div class="form-inline fr mt-4">
-                                <a id="forget" class="font-weight-bold">Forget Password?</a>
+                            <div class="form-inline fr mt-4 d-flex">
+                                <a id="forget" data-bs-toggle="modal" data-bs-target="#exampleModal" class="font-weight-bold align-items-end">Forget Password?</a>
                             </div>
                             <button type="submit" class="btn btn-primary btn-block mt-4 w-100" (click)="onLogin()">Login</button>
                             <div class="text-center pt-4 text-muted">Don't have account? <a id="forget" routerLink="/signup">Sign Up</a></div>
@@ -42,3 +42,26 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+            <p class="modal-title" id="exampleModalLabel"><span style="font-size: 25px;font-weight: 700">Forgot your password?</span><br>
+                <small>Please provide your E-mail we will send reset link</small>
+            </p>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group pt-3">
+             <div class="input-field"><span class="fa fa-user p-2"></span> <input type="text" [(ngModel)]="resetPasswordEmail" (ngModelChange)="checkValidEmail($event)" placeholder="Email"></div>
+            </div>
+            <small *ngIf="!resetPasswordEmail" class="text-danger">Email is required</small>
+            <small *ngIf="!isValidEmail && resetPasswordEmail" class="text-danger">Email is invalid</small>
+        </div>
+        <div class="modal-footer">
+          <button id="closebtn" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" (click)="confirmToSend()">Send</button>
+        </div>
+      </div>
+    </div>
+  </div>
